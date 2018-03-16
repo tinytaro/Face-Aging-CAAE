@@ -12,10 +12,7 @@ FLAGS = flags.FLAGS
 
 
 def main(_):
-
-    # print settings
-    import pprint
-    pprint.pprint(FLAGS.__flags)
+    print(FLAGS.flag_values_dict())
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True

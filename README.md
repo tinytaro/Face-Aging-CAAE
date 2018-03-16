@@ -57,8 +57,10 @@ $ tensorboard --logdir .
 
 
 ## 测试
+测试目录中的图片默认不能少于10张，必须是jpg类型，图像裁剪位置尽量和数据集保持一致。
+
 ```
-$ python main.py --is_train False --testdir your_image_dir
+$ python main.py --is_train=False --testdir your_image_dir
 ```
 输入命令之后，应该显示出下面的信息。
 
