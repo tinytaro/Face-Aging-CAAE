@@ -1,52 +1,53 @@
-# Age Progression/Regression by Conditional Adversarial Autoencoder (CAAE)
+# 用条件对抗式自动编码器进行人脸老化、退龄
 
-TensorFlow implementation of the algorithm in the paper [Age Progression/Regression by Conditional Adversarial Autoencoder](http://web.eecs.utk.edu/~zzhang61/docs/papers/2017_CVPR_Age.pdf).
+该代码是对论文[《用条件对抗式自动编码器进行人脸老化、退龄》](http://web.eecs.utk.edu/~zzhang61/docs/papers/2017_CVPR_Age.pdf)中算法的Tensorflow实现。
 
 <p align="center">
   <img src="demo/method.png" width="500">
 </p>
 
 
-## Pre-requisites
-* Python 2.7x
+## 环境要求
+* Python 3.5
 * Scipy
-* TensorFlow (r0.12)
-    * Please note that you will get errors if running with TensorFlow r1.0 because the definition of input arguments of some functions have changed, *e.g.*, `tf.concat` and `tf.nn.sigmoid_cross_entropy_with_logits`. 
+* TensorFlow (r1.0)
 
-## Datasets
+## 训练数据集
 * FGNET
 * [MORPH](https://ebill.uncw.edu/C20231_ustores/web/product_detail.jsp?PRODUCTID=8)
 * [CACD](http://bcsiriuschen.github.io/CARC/)
-* UTKFace (Access from the [Github link](https://susanqq.github.io/UTKFace/) or the [Wiki link](http://aicip.eecs.utk.edu/wiki/UTKFace))
+* UTKFace (通过[Github](https://susanqq.github.io/UTKFace/)或者[Wiki](http://aicip.eecs.utk.edu/wiki/UTKFace)访问)
 
-## Prepare the training dataset
-You may use any dataset with labels of age and gender. In this demo, we use the UTKFace dataset. It is better to use [aligned and cropped faces](https://drive.google.com/file/d/0BxYys69jI14kYVM3aVhKS1VhRUk/view?usp=sharing). Please save and unzip `UTKFace.tar.gz` to the folder `data`. 
+## 准备训练数据集
+你可以使用任何带年龄标签和性别标签的数据集。在该demo中，我们使用了UTF人脸数据集。用这种[对齐并裁剪过的人脸照片](https://drive.google.com/file/d/0BxYys69jI14kYVM3aVhKS1VhRUk/view?usp=sharing)更好一些。请保存并解压UTKFace.tar.gz到data目录下。
 
-## Training
+## 训练
 ```
 $ python main.py
 ```
 
-The training process has been tested on NVIDIA TITAN X (12GB). The training time for 50 epochs on UTKFace (23,708 images in the size of 128x128x3) is about two and a half hours.
+训练过程在NVIDIA TITAN X (12GB)上进行了测试。在UTKFace数据集(23708张128x128x3大小的图像) 上进行50次epoch的训练时间大约是两个半小时。
 
-During training, a new folder named `save` will be created, including four sub-folders: `summary`, `samples`, `test`, and `checkpoint`.
+在训练过程中，会建立一个新目录`save`，包括四个子目录：`summary`, `samples`, `test` 和 `checkpoint`.
 
-* `samples` saves the reconstructed faces at each epoch.
-* `test` saves the testing results at each epoch (generated faces at different ages based on input faces).
-* `checkpoint` saves the model.
-* `summary` saves the batch-wise losses and intermediate outputs. To visualize the summary, 
+* `samples` 保存每个epoch之后重建的人脸。
+* `test` 保存每个epoch之后的测试结果（基于输入人脸生成的不同年龄的人脸）。
+* `checkpoint` 保存模型。
+* `summary` 保存batch-wise losses和中间输出。
+
+用以下命令来可视化summary, 
 ```
 $ cd save/summary
 $ tensorboard --logdir .
 ```
 
-After training, you can check the folders `samples` and `test` to visualize the reconstruction and testing performance, respectively. The following shows the reconstruction (left) and testing (right) results. The first row in the reconstruction results (left) are testing samples that yield the testing results (right) in the age ascending order from top to bottom.
+训练之后，可以在 `samples` 和 `test` 目录中看到重建和测试效果。下图展示了重建（左）和测试（右）的结果。重建结果（左）的第一行是测试样例，他们分别对应的测试结果（右）由上到下按年龄增长顺序排列。
 
 <p align="center">
   <img src="demo/sample.png" width="400">  <img src="demo/test.png" width="400">
 </p>
 
-The reconstruction loss vs. epoch is shown below, which was passed through a low-pass filter for visualization purpose. The original record is saved in folder `summary`.
+重建损失和epoch的关系见下图, 为了可视化的目的我们对它进行了低通滤波。原始记录保存在`summary`目录中。
 
 <p align="center">
   <img src="demo/loss_epoch.jpg" width="600">
@@ -55,11 +56,11 @@ The reconstruction loss vs. epoch is shown below, which was passed through a low
 
 
 
-## Testing
+## 测试
 ```
 $ python main.py --is_train False --testdir your_image_dir
 ```
-Then, it is supposed to print out the following message.
+输入命令之后，应该显示出下面的信息。
 
 ```
   	Building graph ...
@@ -72,22 +73,22 @@ Then, it is supposed to print out the following message.
 	Done! Results are saved as save/test/test_as_xxx.png
 ```
 
-Specifically, the testing faces will be processed twice, being considered as male and female, respectively. Therefore, the saved files are named `test_as_male.png` and `test_as_female.png`, respectively. To achieve better results, it is necessary to train on a large and diverse dataset.
+具体来说，测试人脸会进行两次处理，这两次分别将其视作男性和女性。因此，保存的文件会分别命名为`test_as_male.png`（作为男性测试） 和 `test_as_female.png`（作为女性测试）。如果想实现更好的结果，需要在更大并更多样化的数据集上进行训练。
 
-## A demo of training process
+## 训练过程演示
 
-The first row shows the input faces of different ages, and the other rows show the improvement of the output faces at every other epoch. From top to bottom, the output faces are in the age ascending order. 
+第一行显示了输入的不同年龄的人脸，其他行显示了每次epoch优化之后输出的人脸。输出的人脸由上到下按年龄递增顺序排列。
 
 <p align="center">
   <img src="demo/demo_train.gif" width="800">
 </p>
 
-## Files
-* [`FaceAging.py`](FaceAging.py) is a class that builds and initializes the model, and implements training and testing related stuff
-* [`ops.py`](ops.py) consists of functions called `FaceAging.py` to implement options of convolution, deconvolution, fully connection, leaky ReLU, load and save images.   
-* [`main.py`](main.py) demonstrates `FaceAging.py`.
+## 文件说明
+* [`FaceAging.py`](FaceAging.py) 建立并初始化模型的类，实现训练和测试的相关功能。
+* [`ops.py`](ops.py) 提供函数由 `FaceAging.py` 文件调用，实现卷积，反卷积，全卷积，leaky ReLU激活函数，下载并保存图像等操作。
+* [`main.py`](main.py) 用于演示 `FaceAging.py`的功能。
     
-## Citation
+## 引用
 Zhifei Zhang, Yang Song, and Hairong Qi. "Age Progression/Regression by Conditional Adversarial Autoencoder." *IEEE Conference on Computer Vision and Pattern Recognition (CVPR)*, 2017.
 ```
 @inproceedings{zhang2017age,
@@ -97,4 +98,4 @@ Zhifei Zhang, Yang Song, and Hairong Qi. "Age Progression/Regression by Conditio
   year={2017}
 }
 ```
-[Spotlight presentation](https://youtu.be/425rPG580dQ)
+[Spotlight 演讲](https://youtu.be/425rPG580dQ)

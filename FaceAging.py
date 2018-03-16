@@ -7,7 +7,7 @@
 # Please cite above paper if you use this code
 #
 
-from __future__ import division
+
 import os
 import time
 from glob import glob
@@ -73,7 +73,7 @@ class FaceAging(object):
             name='z_prior'
         )
         # ************************************* build the graph *******************************************************
-        print '\n\tBuilding graph ...'
+        print('\n\tBuilding graph ...')
 
         # encoder: input image --> z
         self.z = self.encoder(
@@ -126,23 +126,23 @@ class FaceAging(object):
 
         # loss function of discriminator on z
         self.D_z_loss_prior = tf.reduce_mean(
-            tf.nn.sigmoid_cross_entropy_with_logits(self.D_z_prior_logits, tf.ones_like(self.D_z_prior_logits))
+            tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_z_prior_logits, labels=tf.ones_like(self.D_z_prior_logits))
         )
         self.D_z_loss_z = tf.reduce_mean(
-            tf.nn.sigmoid_cross_entropy_with_logits(self.D_z_logits, tf.zeros_like(self.D_z_logits))
+            tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_z_logits, labels=tf.zeros_like(self.D_z_logits))
         )
         self.E_z_loss = tf.reduce_mean(
-            tf.nn.sigmoid_cross_entropy_with_logits(self.D_z_logits, tf.ones_like(self.D_z_logits))
+            tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_z_logits, labels=tf.ones_like(self.D_z_logits))
         )
         # loss function of discriminator on image
         self.D_img_loss_input = tf.reduce_mean(
-            tf.nn.sigmoid_cross_entropy_with_logits(self.D_input_logits, tf.ones_like(self.D_input_logits))
+            tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_input_logits, labels=tf.ones_like(self.D_input_logits))
         )
         self.D_img_loss_G = tf.reduce_mean(
-            tf.nn.sigmoid_cross_entropy_with_logits(self.D_G_logits, tf.zeros_like(self.D_G_logits))
+            tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_G_logits, labels=tf.zeros_like(self.D_G_logits))
         )
         self.G_img_loss = tf.reduce_mean(
-            tf.nn.sigmoid_cross_entropy_with_logits(self.D_G_logits, tf.ones_like(self.D_G_logits))
+            tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_G_logits, labels=tf.ones_like(self.D_G_logits))
         )
 
         # total variation to smooth the generated image
@@ -302,7 +302,7 @@ class FaceAging(object):
             sample_label_gender[i, gender] = self.image_value_range[-1]
 
         # ******************************************* training *******************************************************
-        print '\n\tPreparing for training ...'
+        print('\n\tPreparing for training ...')
 
         # initialize the graph
         tf.global_variables_initializer().run()
@@ -397,16 +397,16 @@ class FaceAging(object):
                     }
                 )
 
-                print("\nEpoch: [%3d/%3d] Batch: [%3d/%3d]\n\tEG_err=%.4f\tTV=%.4f" %
-                    (epoch+1, num_epochs, ind_batch+1, num_batches, EG_err, TV))
-                print("\tEz=%.4f\tDz=%.4f\tDzp=%.4f" % (Ez_err, Dz_err, Dzp_err))
-                print("\tGi=%.4f\tDi=%.4f\tDiG=%.4f" % (Gi_err, Di_err, DiG_err))
+                print(("\nEpoch: [%3d/%3d] Batch: [%3d/%3d]\n\tEG_err=%.4f\tTV=%.4f" %
+                    (epoch+1, num_epochs, ind_batch+1, num_batches, EG_err, TV)))
+                print(("\tEz=%.4f\tDz=%.4f\tDzp=%.4f" % (Ez_err, Dz_err, Dzp_err)))
+                print(("\tGi=%.4f\tDi=%.4f\tDiG=%.4f" % (Gi_err, Di_err, DiG_err)))
 
                 # estimate left run time
                 elapse = time.time() - start_time
                 time_left = ((num_epochs - epoch - 1) * num_batches + (num_batches - ind_batch - 1)) * elapse
-                print("\tTime left: %02d:%02d:%02d" %
-                      (int(time_left / 3600), int(time_left % 3600 / 60), time_left % 60))
+                print(("\tTime left: %02d:%02d:%02d" %
+                      (int(time_left / 3600), int(time_left % 3600 / 60), time_left % 60)))
 
                 # add to summary
                 summary = self.summary.eval(
@@ -690,7 +690,7 @@ class FaceAging(object):
         num_samples = int(np.sqrt(self.size_batch))
         file_names = glob(testing_samples_dir)
         if len(file_names) < num_samples:
-            print 'The number of testing images is must larger than %d' % num_samples
+            print('The number of testing images is must larger than %d' % num_samples)
             exit(0)
         sample_files = file_names[0:num_samples]
         sample = [load_image(
@@ -718,6 +718,6 @@ class FaceAging(object):
         self.test(images, gender_male, 'test_as_male.png')
         self.test(images, gender_female, 'test_as_female.png')
 
-        print '\n\tDone! Results are saved as %s\n' % os.path.join(self.save_dir, 'test', 'test_as_xxx.png')
+        print('\n\tDone! Results are saved as %s\n' % os.path.join(self.save_dir, 'test', 'test_as_xxx.png'))
 
 

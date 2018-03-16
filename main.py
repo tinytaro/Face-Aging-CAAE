@@ -27,12 +27,12 @@ def main(_):
             dataset_name=FLAGS.dataset  # name of the dataset in the folder ./data
         )
         if FLAGS.is_train:
-            print '\n\tTraining Mode'
+            print('\n\tTraining Mode')
             model.train(
                 num_epochs=FLAGS.epoch,  # number of epochs
             )
         else:
-            print '\n\tTesting Mode'
+            print('\n\tTesting Mode')
             model.custom_test(
                 testing_samples_dir=FLAGS.testdir + '/*jpg'
             )

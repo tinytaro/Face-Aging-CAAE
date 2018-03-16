@@ -1,4 +1,4 @@
-from __future__ import division
+
 import tensorflow as tf
 import numpy as np
 from scipy.misc import imread, imresize, imsave
@@ -73,10 +73,10 @@ def concat_label(x, label, duplicate=1):
     label = tf.tile(label, [1, duplicate])
     label_shape = label.get_shape().as_list()
     if len(x_shape) == 2:
-        return tf.concat(1, [x, label])
+        return tf.concat(axis=1, values=[x, label])
     elif len(x_shape) == 4:
         label = tf.reshape(label, [x_shape[0], 1, 1, label_shape[-1]])
-        return tf.concat(3, [x, label*tf.ones([x_shape[0], x_shape[1], x_shape[2], label_shape[-1]])])
+        return tf.concat(axis=3, values=[x, label*tf.ones([x_shape[0], x_shape[1], x_shape[2], label_shape[-1]])])
 
 
 def load_image(
