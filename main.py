@@ -3,11 +3,11 @@ from FaceAging import FaceAging
 
 
 flags = tf.app.flags
-flags.DEFINE_integer(flag_name='epoch', default_value=50, docstring='number of epochs')
-flags.DEFINE_boolean(flag_name='is_train', default_value=True, docstring='training mode')
-flags.DEFINE_string(flag_name='dataset', default_value='UTKFace', docstring='dataset name')
-flags.DEFINE_string(flag_name='savedir', default_value='save', docstring='dir for saving training results')
-flags.DEFINE_string(flag_name='testdir', default_value='None', docstring='dir for testing images')
+flags.DEFINE_integer(name='epoch', default=50, help='number of epochs')
+flags.DEFINE_boolean(name='is_train', default=True, help='training mode')
+flags.DEFINE_string(name='dataset', default='UTKFace', help='dataset name')
+flags.DEFINE_string(name='savedir', default='save', help='dir for saving training results')
+flags.DEFINE_string(name='testdir', default='None', help='dir for testing images')
 FLAGS = flags.FLAGS
 
 

@@ -19,7 +19,7 @@
 * UTKFace (通过[Github](https://susanqq.github.io/UTKFace/)或者[Wiki](http://aicip.eecs.utk.edu/wiki/UTKFace)访问)
 
 ## 准备训练数据集
-你可以使用任何带年龄标签和性别标签的数据集。在该demo中，我们使用了UTF人脸数据集。用这种[对齐并裁剪过的人脸照片](https://drive.google.com/file/d/0BxYys69jI14kYVM3aVhKS1VhRUk/view?usp=sharing)更好一些。请保存并解压UTKFace.tar.gz到data目录下。
+你可以使用任何带年龄标签和性别标签的数据集。在该demo中，我们使用了UTKFace数据集。用这种[对齐并裁剪过的人脸照片](https://drive.google.com/file/d/0BxYys69jI14kYVM3aVhKS1VhRUk/view?usp=sharing)更好一些。需要先将UTKFace.tar.gz数据集文件保存并展开到data目录下。
 
 ## 训练
 ```
