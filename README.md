@@ -10,7 +10,7 @@
 ## 环境要求
 * Python 3.5
 * Scipy
-* TensorFlow (r1.0)
+* TensorFlow (r1.5)
 
 ## 训练数据集
 * FGNET
@@ -26,12 +26,12 @@
 $ python main.py
 ```
 
-训练过程在NVIDIA TITAN X (12GB)上进行了测试。在UTKFace数据集(23708张128x128x3大小的图像) 上进行50次epoch的训练时间大约是两个半小时。
+训练过程在NVIDIA Geforce GTX 1060 6GB上进行了测试。在UTKFace数据集(23708张128x128x3大小的图像) 上进行50轮训练的时间大约是四个小时。
 
 在训练过程中，会建立一个新目录`save`，包括四个子目录：`summary`, `samples`, `test` 和 `checkpoint`.
 
-* `samples` 保存每个epoch之后重建的人脸。
-* `test` 保存每个epoch之后的测试结果（基于输入人脸生成的不同年龄的人脸）。
+* `samples` 保存每轮训练之后重建的人脸。
+* `test` 保存每轮训练之后的测试结果（基于输入的人脸生成的不同年龄的人脸）。
 * `checkpoint` 保存模型。
 * `summary` 保存batch-wise losses和中间输出。
 
@@ -47,7 +47,7 @@ $ tensorboard --logdir .
   <img src="demo/sample.png" width="400">  <img src="demo/test.png" width="400">
 </p>
 
-重建损失和epoch的关系见下图, 为了可视化的目的我们对它进行了低通滤波。原始记录保存在`summary`目录中。
+重建损失和训练轮数的关系见下图, 为了可视化的目的我们对它进行了低通滤波。原始记录保存在`summary`目录中。
 
 <p align="center">
   <img src="demo/loss_epoch.jpg" width="600">
@@ -79,7 +79,7 @@ $ python main.py --is_train=False --testdir your_image_dir
 
 ## 训练过程演示
 
-第一行显示了输入的不同年龄的人脸，其他行显示了每次epoch优化之后输出的人脸。输出的人脸由上到下按年龄递增顺序排列。
+第一行显示了输入的不同年龄的人脸，其他行显示了每轮训练之后输出的人脸。输出的人脸由上到下按年龄递增顺序排列。
 
 <p align="center">
   <img src="demo/demo_train.gif" width="800">
